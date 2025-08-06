@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Tech. Portfolio</title>
+            <style>
+                    /* Reset and Base Styles */
+                    * {
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+                    }
+                    
+                    html {
+                        scroll-behavior: smooth;
+                    }
+                    
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 0;
+                        line-height: 1.6;
+                        overflow-x: hidden;
+                    }
+                    body::before {
+                        content: '';
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), var(--bg-image);
+                        background-size: cover;
+                        background-position: center;
+                        background-attachment: fixed;
+                        z-index: -1;
+                    }
+                    .header {
+                        position: sticky;
+                        top: 0;
+                        z-index: 1000;
+                        background-color: rgba(255, 255, 255, 0.1);
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                        padding: 0 2rem;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        height: 70px;
+                        transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+                    }
+                    .logo {
+                        display: flex;
+                        align-items: center;
+                        height: 50px;
+                        color: #fff;
+                        text-decoration: none;
+                        font-weight: bold;
+                        font-size: 1.6rem; /* Base size for tablet and in-between */
+                        transition: color 0.4s ease;
+                    }
+                    .main-nav ul {
+                        margin: 0;
+                        padding: 0;
+                        list-style: none;
+                        display: flex;
+                        gap: 8px; /* Add space between buttons */
+                    }
+                    .main-nav a {
+                        display: block;
+                        padding: 10px 16px; /* Adjusted padding for a button look */
+                        text-decoration: none;
+                        color: #f1f1f1;
+                        font-weight: 600;
+                        border: 1px solid rgba(255, 255, 255, 0.3);
+                        border-radius: 5px;
+                        transition: color 0.4s ease, background-color 0.4s ease, border-color 0.4s ease;
+                    }
+                    .main-nav a:hover {
+                        background-color: rgba(255, 255, 255, 0.15);
+                        border-color: rgba(255, 255, 255, 0.5);
+                    }
+            
+                    /* Scrolled Header State */
+                    .header.header-scrolled {
+                        background-color: #fff;
+                        border-color: transparent;
+                        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                    }
+                    .header.header-scrolled .logo {
+                        color: #333;
+                    }
+                    .header.header-scrolled .main-nav a {
+                        color: #555;
+                        border-color: #ddd;
+                    }
+                    .header.header-scrolled .main-nav a:hover {
+                        background-color: #f0f0f0;
+                        border-color: #bbb;
+                        color: #007bff;
+                    }
+                    .header.header-scrolled .mobile-menu-toggle span {
+                        background-color: #333;
+                    }
+
+                    .welcome {
+                        position: relative;
+                        min-height: 100vh;
+                        box-sizing: border-box; /* Ensures padding doesn't add to the height */
+                        /* Use flexbox to center its own content */
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center; /* Vertically center */
+                        align-items: center;     /* Horizontally center */
+                        color: white;
+                        text-align: center;      /* Ensures text inside wraps to center */
+                        padding: 0 2rem;
+                        overflow: hidden; /* Ensures pseudo-element doesn't bleed out */
+                    }
+            
+                    .welcome h1 {
+                        font-size: clamp(2.5rem, 1.5rem + 4vw, 3.5rem); /* Fluid typography */
+                        margin-bottom: 1rem;
+                    }
+                    .welcome p {
+                        font-size: 1.25rem;
+                        max-width: 600px;
+                    }
+            
+                    /* Add animation delay for hero text */
+                    .welcome h1.fade-in {
+                        transition-delay: 0.2s;
+                    }
+                    .welcome p.fade-in {
+                        transition-delay: 0.4s;
+                    }
+            
+                    .welcome .btn-hero.fade-in {
+                        transition-delay: 0.6s;
+                    }
+            
+                    /* Button Styles */
+                    .btn {
+                        display: inline-block;
+                        padding: 12px 28px;
+                        font-weight: bold;
+                        text-decoration: none;
+                        border-radius: 4px;
+                        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+                        cursor: pointer;
+                        font-size: 1rem;
+                    }
+            
+                    .btn-hero {
+                        background-color: transparent;
+                        color: #fff;
+                        border: 2px solid #fff;
+                        margin-top: 2rem;
+                    }
+                    .btn-hero:hover {
+                        background-color: #fff;
+                        color: #333;
+                    }
+            
+                    /* Loader animation styles */
+                    .loader-container {
+                        --uib-size: 45px;
+                        --uib-color: white; /* Changed to white to be visible on dark bg */
+                        --uib-speed: 1.75s;
+                        --uib-bg-opacity: .1;
+                        position: absolute;
+                        bottom: 100px;
+                        left: 50%;
+                        display: flex;
+                        flex-direction: column;
+                        height: var(--uib-size);
+                        width: var(--uib-size);
+                        transform: translateX(-50%) rotate(45deg);
+                        animation: loader-rotate calc(var(--uib-speed) * 2) ease-in-out infinite;
+                    }
+            
+                    .loader-container .half {
+                        --uib-half-size: calc(var(--uib-size) * 0.435);
+                        position: absolute;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: var(--uib-half-size);
+                        height: var(--uib-half-size);
+                        overflow: hidden;
+                        isolation: isolate;
+                    }
+            
+                    .loader-container .half:first-child {
+                        top: 8.25%;
+                        left: 8.25%;
+                        border-radius: 50% 50% calc(var(--uib-size) / 15);
+                    }
+            
+                    .loader-container .half:last-child {
+                        bottom: 8.25%;
+                        right: 8.25%;
+                        transform: rotate(180deg);
+                        align-self: flex-end;
+                        border-radius: 50% 50% calc(var(--uib-size) / 15);
+                    }
+            
+                    .loader-container .half:last-child::after {
+                        animation-delay: calc(var(--uib-speed) * -1);
+                    }
+            
+                    .loader-container .half::before {
+                        content: '';
+                        height: 100%;
+                        width: 100%;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        background-color: var(--uib-color);
+                        opacity: var(--uib-bg-opacity);
+                        transition: background-color 0.3s ease;
+                    }
+            
+                    .loader-container .half::after {
+                        content: '';
+                        position: relative;
+                        z-index: 1;
+                        display: block;
+                        background-color: var(--uib-color);
+                        height: 100%;
+                        transform: rotate(45deg) translate(-3%, 50%) scaleX(1.2);
+                        width: 100%;
+                        transform-origin: bottom right;
+                        border-radius: 0 0 calc(var(--uib-size) / 20) 0;
+                        animation: loader-flow calc(var(--uib-speed) * 2) linear infinite both;
+                        transition: background-color 0.3s ease;
+                    }
+            
+                    @keyframes loader-flow {
+                        0% {
+                            transform: rotate(45deg) translate(-3%, 50%) scaleX(1.2);
+                        }
+                        30% {
+                            transform: rotate(45deg) translate(115%, 50%) scaleX(1.2);
+                        }
+                        30.001%, 50% {
+                            transform: rotate(0deg) translate(-85%, -85%) scaleX(1);
+                        }
+                        80%, 100% {
+                            transform: rotate(0deg) translate(0%, 0%) scaleX(1);
+                        }
+                    }
+            
+                    @keyframes loader-rotate {
+                        0%, 30% { transform: translateX(-50%) rotate(45deg); }
+                        50%, 80% { transform: translateX(-50%) rotate(225deg); }
+                        100% { transform: translateX(-50%) rotate(405deg); }
+                    }
+            
+                    /* Generic container for centered content */
+                    .content-container {
+                        max-width: 1100px;
+                        margin: 0 auto;
+                        padding: 0 2rem;
+                    }
+            
+                    /* About Section Styling */
+                    .about-section {
+                        padding: 80px 0;
+                        background-color: #fff; /* A clean white background for content sections */
+                        color: #333;
+                    }
+            
+                    .section-title {
+                        text-align: center;
+                        font-size: clamp(2rem, 1rem + 3vw, 3rem); /* Fluid typography */
+                        margin-bottom: 4rem;
+                        font-weight: bold;
+                        color: #222;
+                    }
+            
+                    .about-section .grid {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 3rem;
+                        align-items: center;
+                    }
+            
+                    /* Add space between multiple grid rows in the same section */
+                    .about-section .grid + .grid {
+                        margin-top: 5rem;
+                    }
+            
+                    .about-image img {
+                        width: 100%;
+                        height: 400px; /* Set a fixed height for the image */
+                        border-radius: 8px;
+                        object-fit: cover; /* Ensures the image covers the area without distortion */
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                    }
+            
+                    .about-description h3 {
+                        font-size: 2.2rem;
+                        margin-bottom: 1.5rem;
+                        font-weight: bold;
+                        color: #333;
+                    }
+            
+                    .about-description p {
+                        font-size: 1.1rem;
+                        line-height: 1.7;
+                        margin-bottom: 1rem;
+                    }
+            
+                    /* Services Section Styling */
+                    .services-section {
+                        padding: 80px 0;
+                        background-color: #f9f9f9; /* A very light gray to separate sections */
+                    }
+            
+                    .services-grid {
+                        display: grid;
+                        grid-template-columns: repeat(3, 1fr);
+                        gap: 2rem;
+                    }
+            
+                    .service-card {
+                        background-color: #fff;
+                        padding: 2.5rem 2rem;
+                        text-align: center;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+                        transition: transform 0.3s ease, box-shadow 0.3s ease;
+                    }
+            
+                    .service-card:hover {
+                        transform: translateY(-10px);
+                        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                    }
+            
+                    .service-icon {
+                        margin-bottom: 1.5rem;
+                        color: #007bff; /* Use a primary color for icons */
+                    }
+            
+                    .service-icon svg {
+                        width: 48px;
+                        height: 48px;
+                    }
+            
+                    .service-card h4 {
+                        font-size: 1.5rem;
+                        margin-bottom: 1rem;
+                        color: #333;
+                        font-weight: bold;
+                    }
+            
+                    .service-card p {
+                        font-size: 1rem;
+                        line-height: 1.6;
+                        color: #666;
+                    }
+            
+                    /* Blog Section Styling */
+                    .blog-section {
+                        padding: 80px 0;
+                        background-color: #f9f9f9;
+                    }
+            
+                    .blog-grid {
+                        display: grid;
+                        grid-template-columns: repeat(3, 1fr);
+                        gap: 2rem;
+                    }
+            
+                    .blog-card {
+                        background-color: #fff;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+                        overflow: hidden;
+                        transition: transform 0.3s ease, box-shadow 0.3s ease;
+                    }
+            
+                    .blog-card:hover {
+                        transform: translateY(-10px);
+                        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                    }
+            
+                    .blog-card img {
+                        width: 100%;
+                        height: 200px;
+                        object-fit: cover;
+                    }
+            
+                    .blog-card-content {
+                        padding: 1.5rem;
+                    }
+            
+                    .blog-category {
+                        display: inline-block;
+                        background-color: #e0e7ff;
+                        color: #4338ca;
+                        padding: 4px 10px;
+                        border-radius: 99px;
+                        font-size: 0.8rem;
+                        font-weight: bold;
+                        margin-bottom: 1rem;
+                    }
+            
+                    .blog-card h4 {
+                        font-size: 1.4rem;
+                        margin: 0 0 0.75rem 0;
+                        color: #333;
+                    }
+            
+                    .read-more-link {
+                        display: inline-flex;
+                        align-items: center;
+                        color: #007bff;
+                        text-decoration: none;
+                        font-weight: bold;
+                        margin-top: 1rem;
+                    }
+            
+                    .read-more-link svg {
+                        width: 18px;
+                        height: 18px;
+                        margin-left: 0.5rem;
+                        transition: transform 0.3s ease;
+                    }
+            
+                    .read-more-link:hover svg {
+                        transform: translateX(5px);
+                    }
+            
+                    /* Contact Section Styling */
+                    .contact-section {
+                        padding: 80px 0;
+                        background-color: #fff;
+                    }
+            
+                    .contact-grid {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 4rem;
+                    }
+            
+                    .contact-form,
+                    .contact-info {
+                        width: 100%;
+                        max-width: 700px; /* Constrain width for better readability */
+                    }
+            
+                    .contact-form h3 {
+                        font-size: 1.8rem;
+                        margin-bottom: 2rem;
+                        text-align: center;
+                    }
+            
+                    .form-group {
+                        position: relative;
+                        margin-bottom: 2rem; /* Increased margin for floating label */
+                    }
+            
+                    .contact-form input,
+                    .contact-form textarea {
+                        width: 100%;
+                        padding: 12px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        font-size: 1rem;
+                        box-sizing: border-box;
+                        background-color: #fff; /* Ensure background is solid */
+                        position: relative;
+                        z-index: 1;
+                    }
+            
+                    .form-label {
+                        position: absolute;
+                        top: 13px;
+                        left: 13px;
+                        color: #999;
+                        pointer-events: none;
+                        transition: all 0.2s ease-out;
+                        z-index: 2;
+                    }
+            
+                    .contact-form input:focus + .form-label, .contact-form input:not(:placeholder-shown) + .form-label, .contact-form textarea:focus + .form-label, .contact-form textarea:not(:placeholder-shown) + .form-label {
+                        top: 0;
+                        transform: translateY(-50%);
+                        font-size: 0.85rem;
+                        color: #007bff;
+                        background-color: #fff;
+                        padding: 0 5px;
+                    }
+            
+                    .contact-form textarea {
+                        resize: vertical;
+                        min-height: 150px;
+                    }
+            
+                    .contact-form button {
+                        background-color: #007bff;
+                        color: white;
+                        padding: 12px 24px;
+                        border: none;
+                        border-radius: 4px;
+                        font-size: 1rem;
+                        font-weight: bold;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease;
+                    }
+            
+                    .contact-form button:hover {
+                        background-color: #0056b3;
+                    }
+            
+                    .contact-info-item {
+                        display: flex;
+                        align-items: center;
+                        margin-bottom: 1.5rem;
+                        font-size: 1.1rem;
+                    }
+            
+                    .contact-info-item svg {
+                        width: 24px;
+                        height: 24px;
+                        margin-right: 1rem;
+                        color: #007bff;
+                    }
+            
+                    /* Footer Styling */
+                    .footer {
+                        background-color: #111827; /* A dark blue-gray */
+                        color: #d1d5db; /* A light gray for text */
+                        padding: 60px 0 20px 0;
+                    }
+            
+                    .footer-grid {
+                        display: grid;
+                        grid-template-columns: repeat(4, 1fr);
+                        gap: 2.5rem;
+                        margin-bottom: 40px;
+                    }
+            
+                    .footer-col h4 {
+                        font-size: 1.2rem;
+                        font-weight: bold;
+                        color: #fff;
+                        margin-top: 0;
+                        margin-bottom: 1.5rem;
+                    }
+            
+                    .footer-col p {
+                        font-size: 0.95rem;
+                        line-height: 1.6;
+                        margin: 0;
+                    }
+            
+                    .footer-col ul {
+                        list-style: none;
+                        padding: 0;
+                        margin: 0;
+                    }
+            
+                    .footer-col ul li {
+                        margin-bottom: 0.75rem;
+                    }
+            
+                    .footer-col ul a {
+                        text-decoration: none;
+                        color: #d1d5db;
+                        transition: color 0.3s ease;
+                    }
+            
+                    .footer-col ul a:hover {
+                        color: #007bff;
+                    }
+            
+                    .social-icons {
+                        display: flex;
+                        gap: 1rem;
+                    }
+            
+                    .social-icons a {
+                        color: #d1d5db;
+                        transition: color 0.3s ease;
+                    }
+            
+                    .social-icons a:hover {
+                        color: #007bff;
+                    }
+            
+                    .social-icons svg {
+                        width: 24px;
+                        height: 24px;
+                        fill: currentColor;
+                    }
+            
+                    .subscribe-form {
+                        display: flex;
+                        margin-top: 1rem;
+                    }
+            
+                    .subscribe-form input {
+                        flex-grow: 1;
+                        padding: 10px;
+                        border: 1px solid #4b5563;
+                        background-color: #1f2937;
+                        color: #fff;
+                        border-radius: 4px 0 0 4px;
+                        outline: none;
+                    }
+            
+                    .subscribe-form button {
+                        padding: 10px 15px;
+                        border: none;
+                        background-color: #007bff;
+                        color: #fff;
+                        font-weight: bold;
+                        cursor: pointer;
+                        border-radius: 0 4px 4px 0;
+                        transition: background-color 0.3s ease;
+                    }
+            
+                    .subscribe-form button:hover {
+                        background-color: #0056b3;
+                    }
+            
+                    .footer-bottom {
+                        text-align: center;
+                        padding-top: 20px;
+                        margin-top: 40px;
+                        border-top: 1px solid #374151;
+                    }
+            
+                    .footer-bottom p {
+                        margin: 0;
+                        font-size: 0.9rem;
+                        color: #9ca3af;
+                    }
+            
+                    /* Animation Styles for reveal on scroll */
+                    .fade-in {
+                        opacity: 0;
+                        transform: translateY(30px);
+                        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+                    }
+            
+                    .fade-in.visible {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+            
+                    /* Back to Top Button */
+                    .back-to-top {
+                        position: fixed;
+                        bottom: 20px;
+                        right: 20px;
+                        background-color: #007bff;
+                        color: white;
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        text-decoration: none;
+                        opacity: 0;
+                        visibility: hidden;
+                        transform: translateY(20px);
+                        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+                        z-index: 1000;
+                    }
+            
+                    .back-to-top.visible {
+                        opacity: 1;
+                        visibility: visible;
+                        transform: translateY(0);
+                    }
+            
+                    /* Responsive Design - Mobile First Approach */
+                    
+                    /* Base responsive styles */
+                    .content-container {
+                        max-width: 100%;
+                        margin: 0 auto;
+                        padding: 0 1rem;
+                    }
+            
+                    /* Mobile Navigation */
+                    .mobile-menu-toggle {
+                        display: none;
+                        background: none;
+                        border: none;
+                        cursor: pointer;
+                        padding: 0.5rem;
+                        z-index: 1001;
+                    }
+            
+                    .mobile-menu-toggle span {
+                        display: block;
+                        width: 25px;
+                        height: 3px;
+                        background-color: #fff;
+                        margin: 5px 0;
+                        transition: 0.3s;
+                    }
+            
+                    /* Responsive Typography */
+                    .welcome p {
+                        font-size: 1.1rem;
+                        max-width: 90%;
+                    }
+            
+                    /* Responsive Grid Layouts */
+                    .about-section .grid {
+                        grid-template-columns: 1fr;
+                        gap: 2rem;
+                    }
+            
+                    .services-grid {
+                        grid-template-columns: 1fr;
+                        gap: 1.5rem;
+                    }
+            
+                    .blog-grid {
+                        grid-template-columns: 1fr;
+                        gap: 1.5rem;
+                    }
+            
+                    .footer-grid {
+                        grid-template-columns: 1fr;
+                        gap: 2rem;
+                    }
+            
+                    /* Responsive Images */
+                    .about-image img {
+                        height: 250px;
+                    }
+            
+                    .blog-card img {
+                        height: 180px;
+                    }
+            
+                    /* Responsive Header */
+                    .header {
+                        padding: 0 1rem;
+                        height: 60px;
+                    }
+            
+                    .main-nav ul {
+                        flex-direction: column;
+                        position: fixed;
+                        top: 60px;
+                        left: -100%;
+                        width: 100%;
+                        height: calc(100vh - 60px);
+                        background-color: rgba(0, 0, 0, 0.95);
+                        transition: left 0.3s ease;
+                        padding: 2rem 0;
+                        gap: 0;
+                    }
+            
+                    .main-nav ul.active {
+                        left: 0;
+                    }
+            
+                    .main-nav a {
+                        padding: 1rem 2rem;
+                        border: none;
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                        border-radius: 0;
+                    }
+            
+                    /* Responsive Buttons */
+                    .btn {
+                        padding: 10px 20px;
+                        font-size: 0.9rem;
+                    }
+            
+                    /* Responsive Forms */
+                    .contact-form,
+                    .contact-info {
+                        max-width: 100%;
+                    }
+            
+                    .subscribe-form {
+                        flex-direction: column;
+                    }
+            
+                    .subscribe-form input,
+                    .subscribe-form button {
+                        width: 100%;
+                        border-radius: 4px;
+                        margin-bottom: 0.5rem;
+                    }
+            
+                    /* Responsive Footer */
+                    .footer {
+                        padding: 40px 0 20px 0;
+                    }
+            
+                    /* Responsive Back to Top Button */
+                    .back-to-top {
+                        bottom: 15px;
+                        right: 15px;
+                        width: 35px;
+                        height: 35px;
+                    }
+            
+                    /* Tablet Styles (768px and up) */
+                    @media (min-width: 768px) {
+                        .content-container {
+                            max-width: 750px;
+                            padding: 0 2rem;
+                        }
+            
+                        .services-grid {
+                            grid-template-columns: repeat(2, 1fr);
+                            gap: 2rem;
+                        }
+            
+                        .blog-grid {
+                            grid-template-columns: repeat(2, 1fr);
+                            gap: 2rem;
+                        }
+            
+                        .footer-grid {
+                            grid-template-columns: repeat(2, 1fr);
+                            gap: 2.5rem;
+                        }
+            
+                        .about-image img {
+                            height: 300px;
+                        }
+            
+                        .header {
+                            padding: 0 2rem;
+                            height: 65px;
+                        }
+            
+                        .logo {
+                            font-size: 1.6rem;
+                        }
+                    }
+            
+                    /* Desktop Styles (1024px and up) */
+                    @media (min-width: 1024px) {
+                        .content-container {
+                            max-width: 1100px;
+                        }
+            
+                        .about-section .grid {
+                            grid-template-columns: 1fr 1fr;
+                            gap: 3rem;
+                        }
+            
+                        .services-grid {
+                            grid-template-columns: repeat(3, 1fr);
+                        }
+            
+                        .blog-grid {
+                            grid-template-columns: repeat(3, 1fr);
+                        }
+            
+                        .footer-grid {
+                            grid-template-columns: repeat(4, 1fr);
+                        }
+            
+                        .about-image img {
+                            height: 400px;
+                        }
+            
+                        .header {
+                            height: 70px;
+                        }
+            
+                        .logo {
+                            font-size: 1.8rem;
+                        }
+            
+                        .mobile-menu-toggle {
+                            display: none;
+                        }
+            
+                        .main-nav ul {
+                            position: static;
+                            flex-direction: row;
+                            background-color: transparent;
+                            height: auto;
+                            left: 0;
+                            padding: 0;
+                            width: auto;
+                        }
+            
+                        .main-nav a {
+                            padding: 10px 16px;
+                            border: 1px solid rgba(255, 255, 255, 0.3);
+                            border-radius: 5px;
+                            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+                        }
+            
+                        .header.header-scrolled .main-nav a {
+                            border-color: #ddd;
+                        }
+                    }
+            
+                    /* Large Desktop Styles (1200px and up) */
+                    @media (min-width: 1200px) {
+                        .content-container {
+                            max-width: 1200px;
+                        }
+                    }
+            
+                    /* Small Mobile Styles (480px and below) */
+                    @media (max-width: 480px) {
+                        .welcome {
+                            padding: 0 1rem;
+                        }
+            
+                        .header {
+                            padding: 0 0.8rem;
+                        }
+            
+                        .logo {
+                            font-size: 1.3rem;
+                        }
+            
+                        .about-section,
+                        .services-section,
+                        .blog-section,
+                        .contact-section {
+                            padding: 60px 0;
+                        }
+            
+                        .service-card,
+                        .blog-card {
+                            padding: 1.5rem 1rem;
+                        }
+                    }
+            
+                    /* Print Styles */
+                    @media print {
+                        .header,
+                        .back-to-top,
+                        .loader-container {
+                            display: none;
+                        }
+            
+                        body::before {
+                            display: none;
+                        }
+            
+                        .welcome {
+                            min-height: auto;
+                            color: #000;
+                        }
+                    }
+            
+                    /* High DPI/Retina Display Support */
+                    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+                        .about-image img,
+                        .blog-card img {
+                            image-rendering: -webkit-optimize-contrast;
+                            image-rendering: crisp-edges;
+                        }
+                    }
+            
+                    /* Reduced Motion Support */
+                    @media (prefers-reduced-motion: reduce) {
+                        *,
+                        *::before,
+                        *::after {
+                            animation-duration: 0.01ms !important;
+                            animation-iteration-count: 1 !important;
+                            transition-duration: 0.01ms !important;
+                        }
+                    }
+            
+                    /* Focus Styles for Accessibility */
+                    .btn:focus,
+                    .main-nav a:focus,
+                    input:focus,
+                    textarea:focus,
+                    button:focus {
+                        outline: 2px solid #007bff;
+                        outline-offset: 2px;
+                    }
+            
+                    /* Mobile Menu Toggle Button */
+                    @media (max-width: 1023px) {
+                        .mobile-menu-toggle {
+                            display: block;
+                        }
+            
+                        .main-nav {
+                            display: block;
+                        }
+                    }
+                </style>
+            </head>
+            <body>
+                <header class="header">
+                    <a href="#home" class="logo">Tech.</a>
+                    <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <nav class="main-nav">
+                        <ul>
+                            <li><a href="#home">Home</a></li>
+                            <li><a href="#about">About Us</a></li>
+                            <li><a href="#services">Services</a></li>
+                            <li><a href="#blog">Blog</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
+                    </nav>
+                </header>
+                <div class="welcome" id="home">
+                    <h1 class="fade-in">WELCOME</h1>
+                    <p class="fade-in">We craft innovative digital solutions that drive growth and success. Explore our work and see how we can help you.</p>
+                    <a href="#about" class="btn btn-hero fade-in">Learn More</a>
+                    <div class="loader-container">
+                        <div class="half"></div>
+                        <div class="half"></div>
+                    </div>
+                </div>
+            
+                <!-- About Us Section -->
+                <section id="about" class="about-section">
+                    <div class="content-container">
+                        <h2 class="section-title">About Us</h2>
+                        <div class="grid">
+                            <div class="about-image fade-in">
+                                <img src="20240805_085002~3.jpg" alt="A diverse team collaborating around a table in a bright, modern office.">
+                            </div>
+                            <div class="about-description fade-in">
+                                <h3>Driven by Innovation</h3>
+                                <p>We are a forward-thinking technology company dedicated to creating solutions that matter. Our journey began with a simple idea: to harness the power of technology to solve complex problems and improve lives.</p>
+                                <p>Our team is comprised of passionate experts, thinkers, and creators who thrive on collaboration and are committed to excellence. We believe in building strong relationships with our clients to deliver tailored, impactful results.</p>
+                            </div>
+                        </div>
+                        <div class="grid">
+                            <div class="about-description fade-in">
+                                <h3>Our Mission & Values</h3>
+                                <p>Our mission is to empower businesses through transformative technology. We are guided by our core values of integrity, collaboration, and a relentless pursuit of excellence, ensuring we deliver outstanding value to our partners.</p>
+                                <p>We believe in a culture of continuous learning and adaptation, which allows us to stay at the forefront of technological advancements and offer cutting-edge solutions that drive growth and success for our clients.</p>
+                            </div>
+                            <div class="about-image fade-in">
+                                <img src="20240722_145326.jpg" alt="A modern office space with a focus on a whiteboard with strategic diagrams.">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            
+                <!-- Services Section -->
+                <section id="services" class="services-section">
+                    <div class="content-container">
+                        <h2 class="section-title">Our Services</h2>
+                        <div class="services-grid">
+                            <!-- Service Card 1 -->
+                            <div class="service-card fade-in">
+                                <div class="service-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                                </div>
+                                <h4>Web Development</h4>
+                                <p>We build responsive, high-performance websites and web applications tailored to your business needs.</p>
+                            </div>
+                            <!-- Service Card 2 -->
+                            <div class="service-card fade-in">
+                                <div class="service-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                                </div>
+                                <h4>Mobile App Development</h4>
+                                <p>From iOS to Android, we create intuitive and engaging mobile experiences for your users.</p>
+                            </div>
+                            <!-- Service Card 3 -->
+                            <div class="service-card fade-in">
+                                <div class="service-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
+                                </div>
+                                <h4>Cloud Solutions</h4>
+                                <p>Leverage the power of the cloud with our scalable and secure infrastructure services.</p>
+                            </div>
+                            <!-- Service Card 4 -->
+                            <div class="service-card fade-in">
+                                <div class="service-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+                                </div>
+                                <h4>UI/UX Design</h4>
+                                <p>Crafting user-centric designs that are both beautiful and functional, enhancing user satisfaction.</p>
+                            </div>
+                            <!-- Service Card 5 -->
+                            <div class="service-card fade-in">
+                                <div class="service-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+                                </div>
+                                <h4>Data Analytics</h4>
+                                <p>Turn your data into actionable insights with our advanced analytics and business intelligence services.</p>
+                            </div>
+                            <!-- Service Card 6 -->
+                            <div class="service-card fade-in">
+                                <div class="service-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                </div>
+                                <h4>Cybersecurity</h4>
+                                <p>Protect your digital assets with our robust security protocols and threat-monitoring solutions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            
+                <!-- Blog Section -->
+                <section id="blog" class="blog-section">
+                    <div class="content-container">
+                        <h2 class="section-title">From Our Blog</h2>
+                        <div class="blog-grid">
+                            <!-- Blog Post 1 -->
+                            <div class="blog-card fade-in">
+                                <img src="20240805_095838.jpg" alt="Abstract visualization of data points and connections, representing AI.">
+                                <div class="blog-card-content">
+                                    <span class="blog-category">Technology</span>
+                                    <h4>The Future of AI in Business Intelligence</h4>
+                                    <p>Discover how artificial intelligence is revolutionizing data analytics and providing deeper insights for businesses worldwide.</p>
+                                </div>
+                            </div>
+                            <!-- Blog Post 2 -->
+                            <div class="blog-card fade-in">
+                                <img src="20240805_085127.jpg" alt="A person sketching wireframes for a mobile application on a tablet.">
+                                <div class="blog-card-content">
+                                    <span class="blog-category">Design</span>
+                                    <h4>10 UI/UX Design Trends to Watch in 2024</h4>
+                                    <p>Stay ahead of the curve with our breakdown of the most important UI/UX design trends shaping digital products this year.</p>
+                                </div>
+                            </div>
+                            <!-- Blog Post 3 -->
+                            <div class="blog-card fade-in">
+                                <img src="20240805_085549.jpg" alt="A group of professionals in a meeting, discussing a digital transformation roadmap.">
+                                <div class="blog-card-content">
+                                    <span class="blog-category">Business</span>
+                                    <h4>Navigating the Digital Transformation Journey</h4>
+                                    <p>A practical guide for businesses looking to adopt new technologies and thrive in the digital-first economy.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            
+                <!-- Contact Section -->
+                <section id="contact" class="contact-section">
+                    <div class="content-container">
+                        <h2 class="section-title">Contact Us</h2>
+                        <div class="contact-grid">
+                            <div class="contact-form fade-in">
+                                <h3>Send us a message</h3>
+                                <form action="#" method="POST">
+                                    <div class="form-group">
+                                        <input type="text" id="name" name="name" placeholder=" " required>
+                                        <label for="name" class="form-label">Name: </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" id="email" name="email" placeholder=" " required>
+                                        <label for="email" class="form-label">Email: </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea id="message" name="message" placeholder=" " required></textarea>
+                                        <label for="message" class="form-label">Message: </label>
+                                    </div>
+                                    <button type="submit">Send Message</button>
+                                </form>
+                            </div>
+                            <div class="contact-info fade-in">
+                                <div class="contact-info-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                    <span>54 Tech Lane, Lumbadzi, LL 94043</span>
+                                </div>
+                                <div class="contact-info-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                    <span>(265) 999-950-890</span>
+                                </div>
+                                <div class="contact-info-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                    <span>contact@tech.com</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            
+                <footer class="footer">
+                    <div class="content-container">
+                        <div class="footer-grid">
+                            <div class="footer-col">
+                                <h4>About Us</h4>
+                                <p>We are a forward-thinking technology company dedicated to creating solutions that matter, from web development to cloud infrastructure.</p>
+                            </div>
+                            <div class="footer-col">
+                                <h4>Quick Links</h4>
+                                <ul>
+                                    <li><a href="#home">Home</a></li>
+                                    <li><a href="#about">About Us</a></li>
+                                    <li><a href="#services">Services</a></li>
+                                    <li><a href="#blog">Blog</a></li>
+                                    <li><a href="#contact">Contact</a></li>
+                                </ul>
+                            </div>
+                            <div class="footer-col">
+                                <h4>Follow Us</h4>
+                                <div class="social-icons">
+                                    <a href="#" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+                                    <a href="#" aria-label="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a>
+                                    <a href="#" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                                    <a href="#" aria-label="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+                                </div>
+                            </div>
+                            <div class="footer-col">
+                                <h4>Subscribe</h4>
+                                <p>Get the latest updates and news from us.</p>
+                                <form class="subscribe-form" action="#" method="POST">
+                                    <input type="email" name="email" placeholder="Your Email" required>
+                                    <button type="submit">Subscribe</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="footer-bottom">
+                            <p>&copy; 2025 Tech. All Rights Reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        // Intersection Observer for fade-in animations
+                        const observer = new IntersectionObserver((entries) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    entry.target.classList.add('visible');
+                                    observer.unobserve(entry.target);
+                                }
+                            });
+                        }, {
+                            threshold: 0.1 // Trigger when 10% of the element is visible
+                        });
+            
+                        const elementsToAnimate = document.querySelectorAll('.fade-in');
+                        elementsToAnimate.forEach(el => {
+                            observer.observe(el);
+                        });
+            
+                        // Header scroll effect
+                        const header = document.querySelector('.header');
+                        const backToTopButton = document.querySelector('.back-to-top');
+            
+                        window.addEventListener('scroll', () => {
+                            if (window.scrollY > 50) { // Change color after scrolling 50px
+                                header.classList.add('header-scrolled');
+                            } else {
+                                header.classList.remove('header-scrolled');
+                            }
+            
+                            // Back to top button logic
+                            if (window.scrollY > 300) { // Show button after scrolling 300px
+                                backToTopButton.classList.add('visible');
+                            } else {
+                                backToTopButton.classList.remove('visible');
+                            }
+                        });
+            
+                        // Set a random background image on page load
+                        const backgroundImages = [
+                            '20240805_095838.jpg',
+                            '20241121_150721.jpg'
+                        ];
+                        const randomImage = backgroundImages[Math.floor(Math.random() * backgroundImages.length)];
+                        // Set the CSS variable on the root element (<html>)
+                        document.documentElement.style.setProperty('--bg-image', `url(${randomImage})`);
+
+                        // Mobile menu toggle functionality
+                        const menuToggle = document.querySelector('.mobile-menu-toggle');
+                        const mainNav = document.querySelector('.main-nav ul');
+
+                        if (menuToggle && mainNav) {
+                            menuToggle.addEventListener('click', () => {
+                                mainNav.classList.toggle('active');
+                            });
+
+                            // Close menu when a link is clicked
+                            mainNav.querySelectorAll('a').forEach(link => {
+                                link.addEventListener('click', () => mainNav.classList.remove('active'));
+                            });
+                        }
+                    });
+                </script>
+               
+               <a href="#home" class="back-to-top" aria-label="Back to top"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg></a>
+        </body>
+</html>
+       
